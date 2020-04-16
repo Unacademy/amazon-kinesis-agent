@@ -9,9 +9,13 @@ set -e
 # Attempt to load up the /etc/lsb-release file to determine our OS. If none is
 # found, we default our settings to RHEL/Amazon Linux as the original behavior
 # of this script intended.
-dist=RedHat
-[[ -f /etc/lsb-release ]] && dist=Ubuntu
-[[ -f /etc/debian_version ]] && dist=Debian
+if [[ -f /etc/lsb-release ]]; then
+  dist=Ubuntu
+elif [[ -f /etc/debian_version ]]; then
+  dist=Debian
+else
+  dist=RedHat
+fi
 
 # Tell the user what OS we detected
 echo "Detected OS Distro: ${dist}"
@@ -118,9 +122,11 @@ download_dependencies() {
                   commons-logging:commons-logging-adapters:1.1 \
                   commons-logging:commons-logging-api:1.1 \
                   org.apache.commons:commons-lang3:3.4 \
-                  log4j:log4j:1.2.17 \
+                  org.apache.logging.log4j:log4j-1.2-api:2.12.1 \
+                  org.apache.logging.log4j:log4j-api:2.12.1 \
+                  org.apache.logging.log4j:log4j-core:2.12.1 \
+                  org.apache.logging.log4j:log4j-slf4j-impl:2.12.1 \
                   org.slf4j:slf4j-api:1.7.12 \
-                  org.slf4j:slf4j-log4j12:1.7.12 \
                   com.beust:jcommander:1.48 \
                   org.xerial:sqlite-jdbc:3.8.11.2 \
                   joda-time:joda-time:2.8.2 \
